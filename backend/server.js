@@ -37,3 +37,14 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server läuft auf Port ${PORT}`);
 });
+const { verifyToken, nurAdmin } = require('./middleware/auth');
+
+// Geschützte Test-Route
+app.get('/api/geschuetzt', verifyToken, (req, res) => {
+  res.json({ nachricht: `Willkommen ${req.benutzer.rolle}! Du bist eingeloggt ✅` });
+});
+
+// Nur Admin Route
+app.get('/api/nur-admin', verifyToken, nurAdmin, (req, res) => {
+  res.json({ nachricht: 'Willkommen Admin! 👑' });
+});
